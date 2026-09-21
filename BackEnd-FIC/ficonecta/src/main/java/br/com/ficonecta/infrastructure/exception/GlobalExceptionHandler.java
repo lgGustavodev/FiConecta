@@ -49,4 +49,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleCredenciaisInvalidas(CredenciaisInvalidasException ex) {
         return montarResposta(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
+
+    @ExceptionHandler(PerfilNaoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> handlePerfilNaoEncontrado(PerfilNaoEncontradoException ex) {
+        return montarResposta(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
 }

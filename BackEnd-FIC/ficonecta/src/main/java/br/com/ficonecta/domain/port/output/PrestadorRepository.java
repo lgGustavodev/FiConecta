@@ -11,5 +11,7 @@ public interface PrestadorRepository {
 
     Optional<Prestador> findById(UUID id);
 
+    Optional<Prestador> findByUsuarioId(UUID usuarioId);
+
     boolean existsByCpf(String cpf);
 }

@@ -27,12 +27,32 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .sessionManagement(sm ->
+                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+
                 .authorizeHttpRequests(auth -> auth
+
+                        // Login e cadastros são públicos
                         .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/prestadores/cadastro").permitAll()
+                        .requestMatchers("/empresas/cadastro").permitAll()
+
+                        // Área do prestador
+                        .requestMatchers("/prestadores/**").hasRole("PRESTADOR")
+
+                        // Área da empresa
+                        .requestMatchers("/empresas/**").hasRole("EMPRESA")
+
+                        // Qualquer outro endpoint precisa estar autenticado
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
