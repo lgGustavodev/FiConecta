@@ -44,4 +44,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDocumentoJaCadastrado(DocumentoJaCadastradoException ex) {
         return montarResposta(HttpStatus.CONFLICT, ex.getMessage());
     }
+
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<ErrorResponse> handleCredenciaisInvalidas(CredenciaisInvalidasException ex) {
+        return montarResposta(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
 }
