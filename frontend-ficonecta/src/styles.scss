@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  /* Cores de marca */
+  --color-blue-dark: #0455BF;
+  --color-blue: #0468BF;
+  --color-green-dark: #05A66B;
+  --color-green: #0ABF58;
+  --color-bg: #F2F2F2;
+
+  /* Derivadas */
+  --color-surface: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-text-muted: #5C6670;
+  --color-border: #D9D9D9;
+  --color-error: #C0392B;
+
+  /* Gradiente de marca */
+  --gradient-brand: linear-gradient(135deg, var(--color-blue-dark), var(--color-green-dark));
+
+  /* Tipografia */
+  --font-base: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Espaçamento */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* Raio de borda */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  /* Sombra sutil (pro card flutuante) */
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco de teclado visível em qualquer elemento interativo */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+/* Respeita quem prefere menos animação */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

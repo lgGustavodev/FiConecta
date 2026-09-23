@@ -1,0 +1,51 @@
+<div class="auth-layout">
+  <div class="auth-layout__hero" aria-hidden="true">
+    <img src="assets/images/login-hero.jpg" alt="" class="auth-layout__hero-img" />
+    <div class="auth-layout__hero-content">
+      <h2 class="auth-layout__hero-title">
+        Conectando quem precisa de trabalho
+        <span>a quem precisa de gente.</span>
+      </h2>
+    </div>
+  </div>
+
+  <div class="auth-layout__panel">
+    <div class="auth-card">
+      <h1 class="auth-card__title">Bem-vindo ao FI Conecta</h1>
+      <p class="auth-card__subtitle">Acesse sua conta e continue conectando oportunidades.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="auth-form__field">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" />
+          @if (form.controls['email'].touched && form.controls['email'].hasError('required')) {
+            <span class="auth-form__error">Email é obrigatório.</span>
+          }
+          @if (form.controls['email'].touched && form.controls['email'].hasError('email')) {
+            <span class="auth-form__error">Informe um email válido.</span>
+          }
+        </div>
+
+        <div class="auth-form__field">
+          <label for="senha">Senha</label>
+          <input id="senha" type="password" formControlName="senha" />
+          @if (form.controls['senha'].touched && form.controls['senha'].hasError('required')) {
+            <span class="auth-form__error">Senha é obrigatória.</span>
+          }
+        </div>
+
+        @if (erro()) {
+          <p class="auth-form__error auth-form__error--general">{{ erro() }}</p>
+        }
+
+        <button type="submit" class="btn-primary" [disabled]="form.invalid || carregando()">
+          {{ carregando() ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
+
+      <p class="auth-card__footer">
+        Não tem conta? <a routerLink="/cadastro">Cadastre-se</a>
+      </p>
+    </div>
+  </div>
+</div>

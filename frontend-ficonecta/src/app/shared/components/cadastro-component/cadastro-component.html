@@ -1,0 +1,179 @@
+<div class="cadastro-container">
+  <h1>Criar conta</h1>
+
+  <div class="toggle-tipo">
+    <button
+      type="button"
+      [class.ativo]="tipoSelecionado() === 'PRESTADOR'"
+      (click)="selecionarTipo('PRESTADOR')">
+      Prestador de Serviço
+    </button>
+
+    <button
+      type="button"
+      [class.ativo]="tipoSelecionado() === 'EMPRESA'"
+      (click)="selecionarTipo('EMPRESA')">
+      Empresa
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Nome -->
+    <label for="nome">
+      {{ tipoSelecionado() === 'PRESTADOR' ? 'Nome completo' : 'Nome da empresa' }}
+    </label>
+
+    <input
+      id="nome"
+      type="text"
+      formControlName="nome"
+    />
+
+    @if (form.controls['nome'].touched && form.controls['nome'].hasError('required')) {
+      <span class="erro-campo">
+        {{ tipoSelecionado() === 'PRESTADOR'
+          ? 'Nome completo é obrigatório.'
+          : 'Nome da empresa é obrigatório.' }}
+      </span>
+    }
+
+
+    <!-- Email -->
+    <label for="email">Email</label>
+
+    <input
+      id="email"
+      type="email"
+      formControlName="email"
+    />
+
+    @if (form.controls['email'].touched && form.controls['email'].hasError('required')) {
+      <span class="erro-campo">
+        Email é obrigatório.
+      </span>
+    }
+
+    @if (form.controls['email'].touched && form.controls['email'].hasError('email')) {
+      <span class="erro-campo">
+        Informe um email válido.
+      </span>
+    }
+
+
+    <!-- Senha -->
+    <label for="senha">Senha</label>
+
+    <input
+      id="senha"
+      type="password"
+      formControlName="senha"
+    />
+
+    @if (form.controls['senha'].touched && form.controls['senha'].hasError('required')) {
+      <span class="erro-campo">
+        Senha é obrigatória.
+      </span>
+    }
+
+    @if (form.controls['senha'].touched && form.controls['senha'].hasError('minlength')) {
+      <span class="erro-campo">
+        A senha deve ter pelo menos 6 caracteres.
+      </span>
+    }
+
+
+    <!-- Prestador -->
+    @if (tipoSelecionado() === 'PRESTADOR') {
+
+      <label for="cpf">CPF</label>
+
+      <input
+        id="cpf"
+        type="text"
+        formControlName="cpf"
+      />
+
+      @if (form.controls['cpf'].touched && form.controls['cpf'].hasError('required')) {
+        <span class="erro-campo">
+          CPF é obrigatório.
+        </span>
+      }
+
+    }
+
+
+    <!-- Empresa -->
+    @if (tipoSelecionado() === 'EMPRESA') {
+
+      <label for="tipoDocumento">Tipo de documento</label>
+
+      <select
+        id="tipoDocumento"
+        formControlName="tipoDocumento">
+        <option value="CPF">CPF</option>
+        <option value="CNPJ">CNPJ</option>
+      </select>
+
+      @if (
+        form.controls['tipoDocumento'].touched &&
+        form.controls['tipoDocumento'].hasError('required')
+      ) {
+        <span class="erro-campo">
+          Selecione o tipo de documento.
+        </span>
+      }
+
+
+      <label for="documento">Documento</label>
+
+      <input
+        id="documento"
+        type="text"
+        formControlName="documento"
+      />
+
+      @if (
+        form.controls['documento'].touched &&
+        form.controls['documento'].hasError('required')
+      ) {
+        <span class="erro-campo">
+          Documento é obrigatório.
+        </span>
+      }
+
+    }
+
+
+    <!-- Erro geral -->
+    @if (erro()) {
+      <p class="erro">
+        {{ erro() }}
+      </p>
+    }
+
+
+    <!-- Sucesso -->
+    @if (sucesso()) {
+      <p class="sucesso">
+        Cadastro realizado! Redirecionando para o login...
+      </p>
+    }
+
+
+    <!-- Botão -->
+    <button
+      type="submit"
+      [disabled]="form.invalid || carregando()">
+
+      {{ carregando() ? 'Cadastrando...' : 'Cadastrar' }}
+
+    </button>
+
+  </form>
+
+  <p>
+    Já tem conta?
+    <a routerLink="/login">Entrar</a>
+  </p>
+</div>
