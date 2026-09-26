@@ -1,6 +1,8 @@
 package br.com.ficonecta.domain.model;
 
 
+import br.com.ficonecta.domain.model.enums.StatusUsuario;
+import br.com.ficonecta.domain.model.enums.TipoUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

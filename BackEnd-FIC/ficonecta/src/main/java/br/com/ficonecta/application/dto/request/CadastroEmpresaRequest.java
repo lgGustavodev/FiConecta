@@ -1,6 +1,6 @@
 package br.com.ficonecta.application.dto.request;
 
-import br.com.ficonecta.domain.model.TipoDocumento;
+import br.com.ficonecta.domain.model.enums.TipoDocumento;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

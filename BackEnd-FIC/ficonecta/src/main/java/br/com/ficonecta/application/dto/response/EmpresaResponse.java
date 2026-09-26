@@ -1,7 +1,7 @@
 package br.com.ficonecta.application.dto.response;
 
 
-import br.com.ficonecta.domain.model.TipoDocumento;
+import br.com.ficonecta.domain.model.enums.TipoDocumento;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

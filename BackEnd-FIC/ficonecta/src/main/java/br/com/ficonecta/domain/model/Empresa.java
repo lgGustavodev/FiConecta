@@ -1,6 +1,7 @@
 package br.com.ficonecta.domain.model;
 
 
+import br.com.ficonecta.domain.model.enums.TipoDocumento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

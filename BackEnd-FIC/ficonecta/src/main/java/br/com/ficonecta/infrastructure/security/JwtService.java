@@ -1,6 +1,6 @@
 package br.com.ficonecta.infrastructure.security;
 
-import br.com.ficonecta.domain.model.TipoUsuario;
+import br.com.ficonecta.domain.model.enums.TipoUsuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
