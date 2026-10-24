@@ -1,8 +1,10 @@
-package br.com.ficonecta.adapter.input.web;
+package br.com.ficonecta.adapter.input.controller;
 
 import br.com.ficonecta.application.dto.request.CadastroPrestadorRequest;
+import br.com.ficonecta.application.dto.response.PrestadorDashboardResponse;
 import br.com.ficonecta.application.dto.response.PrestadorResponse;
 import br.com.ficonecta.application.service.CadastroPrestadorService;
+import br.com.ficonecta.application.service.PrestadorDashboardService;
 import br.com.ficonecta.application.service.PrestadorPerfilService;
 import br.com.ficonecta.infrastructure.security.AutenticacaoUtil;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ public class PrestadorController {
     private final CadastroPrestadorService cadastroPrestadorService;
     private  final PrestadorPerfilService prestadorPerfilService;
     private final AutenticacaoUtil autenticacaoUtil;
+    private final PrestadorDashboardService prestadorDashboardService;
 
 
     @PostMapping("/cadastro")
@@ -35,5 +38,11 @@ public class PrestadorController {
         );
     }
 
+    @GetMapping("/dashboard")
+    public PrestadorDashboardResponse dashboard() {
+        return prestadorDashboardService.buscarDashboard(
+                autenticacaoUtil.getUsuarioIdAutenticado()
+        );
+    }
 }
 //http://localhost:8080/api/cadastro-prestadores

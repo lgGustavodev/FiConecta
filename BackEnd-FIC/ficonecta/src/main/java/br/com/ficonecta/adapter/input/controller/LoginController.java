@@ -1,4 +1,4 @@
-package br.com.ficonecta.adapter.input.web;
+package br.com.ficonecta.adapter.input.controller;
 
 import br.com.ficonecta.application.dto.request.LoginRequest;
 import br.com.ficonecta.application.dto.response.LoginResponse;
