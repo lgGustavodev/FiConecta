@@ -13,9 +13,11 @@ import br.com.ficonecta.infrastructure.exception.CpfJaCadastradoException;
 import br.com.ficonecta.infrastructure.exception.EmailJaCadastradoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CadastroPrestadorService {
@@ -38,6 +40,8 @@ public class CadastroPrestadorService {
         prestador.setUsuario(usuarioSalvo);
 
         Prestador prestadorSalvo = prestadorRepository.save(prestador);
+        log.info("Prestador cadastrado (usuarioId={}, prestadorId={})",
+                usuarioSalvo.getId(), prestadorSalvo.getId());
 
         return prestadorMapper.toResponse(prestadorSalvo);
     }

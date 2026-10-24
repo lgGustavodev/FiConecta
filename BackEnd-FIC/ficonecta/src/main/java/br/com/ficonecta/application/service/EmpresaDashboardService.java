@@ -6,11 +6,13 @@ import br.com.ficonecta.application.dto.response.ResumoVagasResponse;
 import br.com.ficonecta.domain.model.enums.StatusVaga;
 import br.com.ficonecta.domain.port.output.VagaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmpresaDashboardService {
@@ -20,6 +22,7 @@ public class EmpresaDashboardService {
 
     @Transactional(readOnly = true)
     public EmpresaDashboardResponse buscarDashboard(UUID usuarioId) {
+        log.debug("Montando dashboard da empresa (usuarioId={})", usuarioId);
 
         EmpresaResponse perfil = empresaPerfilService.buscarMeuPerfil(usuarioId);
 
@@ -36,6 +39,9 @@ public class EmpresaDashboardService {
         long abertas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.ABERTA);
         long fechadas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.FECHADA);
         long canceladas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.CANCELADA);
+
+        log.debug("Resumo de vagas (empresaId={}): abertas={}, fechadas={}, canceladas={}",
+                empresaId, abertas, fechadas, canceladas);
 
         return ResumoVagasResponse.builder()
                 .abertas(abertas)

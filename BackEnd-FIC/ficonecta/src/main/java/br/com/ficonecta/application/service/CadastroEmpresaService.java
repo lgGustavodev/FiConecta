@@ -13,9 +13,11 @@ import br.com.ficonecta.infrastructure.exception.DocumentoJaCadastradoException;
 import br.com.ficonecta.infrastructure.exception.EmailJaCadastradoException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CadastroEmpresaService {
@@ -51,6 +53,8 @@ public class CadastroEmpresaService {
 
         Empresa empresaSalva = empresaRepository.save(empresa);
 
+        log.info("Empresa cadastrada (usuarioId={}, empresaId={})",
+                usuarioSalvo.getId(), empresaSalva.getId());
         return empresaMapper.toResponse(empresaSalva);
     }
 

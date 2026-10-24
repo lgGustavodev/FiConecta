@@ -1,5 +1,6 @@
 package br.com.ficonecta.infrastructure.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,16 +10,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailJaCadastradoException.class)
     public ResponseEntity<ErrorResponse> handleEmailJaCadastrado(EmailJaCadastradoException ex) {
+        log.warn("Cadastro recusado: e-mail já cadastrado");
         return montarResposta(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(CpfJaCadastradoException.class)
     public ResponseEntity<ErrorResponse> handleCpfJaCadastrado(CpfJaCadastradoException ex) {
+        log.warn("Cadastro recusado: CPF já cadastrado");
         return montarResposta(HttpStatus.CONFLICT, ex.getMessage());
     }
 
@@ -42,6 +46,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DocumentoJaCadastradoException.class)
     public ResponseEntity<ErrorResponse> handleDocumentoJaCadastrado(DocumentoJaCadastradoException ex) {
+        log.warn("Cadastro recusado: documento já cadastrado");
         return montarResposta(HttpStatus.CONFLICT, ex.getMessage());
     }
 
@@ -52,6 +57,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PerfilNaoEncontradoException.class)
     public ResponseEntity<ErrorResponse> handlePerfilNaoEncontrado(PerfilNaoEncontradoException ex) {
+        log.warn("Perfil não encontrado para usuário autenticado");
         return montarResposta(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+
+
 }
