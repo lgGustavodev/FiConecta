@@ -52,19 +52,27 @@ CREATE TABLE empresas (
                           created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
                           updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
-
 -- =========================================================
 -- TABELA: vagas
 -- Diárias/serviços publicados por uma empresa
--- Versão mínima: sem convites, favoritos ou candidaturas ainda
+-- Inclui horário e local (endereço em colunas separadas)
 -- =========================================================
 CREATE TABLE vagas (
                        id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                        empresa_id      UUID NOT NULL REFERENCES empresas(id),
                        titulo          VARCHAR(150) NOT NULL,
                        descricao       TEXT,
-                       valor           NUMERIC(10,2) NOT NULL,
+                       valor           NUMERIC(10,2) NOT NULL CHECK (valor > 0),
                        data_vaga       DATE NOT NULL,
+                       horario_inicio  TIME NOT NULL,
+                       horario_fim     TIME NOT NULL,
+                       cep             VARCHAR(8)   NOT NULL,
+                       logradouro      VARCHAR(150) NOT NULL,
+                       numero          VARCHAR(10)  NOT NULL,
+                       complemento     VARCHAR(100),
+                       bairro          VARCHAR(100) NOT NULL,
+                       cidade          VARCHAR(100) NOT NULL,
+                       uf              CHAR(2)      NOT NULL,
                        status          VARCHAR(20) NOT NULL DEFAULT 'ABERTA' CHECK (status IN ('ABERTA', 'FECHADA', 'CANCELADA')),
                        created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
                        updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
@@ -75,3 +83,9 @@ CREATE TABLE vagas (
 -- =========================================================
 CREATE INDEX idx_vagas_empresa_id ON vagas(empresa_id);
 CREATE INDEX idx_vagas_status ON vagas(status);
+
+ALTER TABLE prestadores
+    ADD CONSTRAINT uq_prestadores_cpf UNIQUE (cpf);
+
+ALTER TABLE empresas
+    ADD CONSTRAINT uq_empresas_documento UNIQUE (documento);

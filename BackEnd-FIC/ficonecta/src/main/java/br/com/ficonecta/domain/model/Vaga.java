@@ -1,6 +1,7 @@
 package br.com.ficonecta.domain.model;
 
 
+import br.com.ficonecta.domain.model.enums.Endereco;
 import br.com.ficonecta.domain.model.enums.StatusVaga;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,6 +9,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -49,6 +51,15 @@ public class Vaga {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(name = "horario_inicio", nullable = false)
+    private LocalTime horarioInicio;
+
+    @Column(name = "horario_fim", nullable = false)
+    private LocalTime horarioFim;
+
+    @Embedded
+    private Endereco endereco;
 
     @PrePersist
     protected void onCreate() {
