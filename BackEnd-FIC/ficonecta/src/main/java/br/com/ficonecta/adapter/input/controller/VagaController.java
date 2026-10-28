@@ -1,6 +1,7 @@
 package br.com.ficonecta.adapter.input.controller;
 
 
+import br.com.ficonecta.adapter.input.controller.swagger.VagaControllerSwagger;
 import br.com.ficonecta.application.dto.request.CadastroVagaRequest;
 import br.com.ficonecta.application.dto.response.VagaResponse;
 import br.com.ficonecta.application.service.CadastroVagaService;
@@ -19,12 +20,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/empresas/vagas")
 @RequiredArgsConstructor
-public class VagaController {
+public class VagaController implements VagaControllerSwagger {
 
     private final CadastroVagaService cadastroVagaService;
     private final AutenticacaoUtil autenticacaoUtil;
 
     @PostMapping
+    @Override
     public ResponseEntity<VagaResponse> cadastrar(@Valid @RequestBody CadastroVagaRequest request){
         UUID usuarioId = autenticacaoUtil.getUsuarioIdAutenticado();
         VagaResponse response = cadastroVagaService.cadastrar(usuarioId, request);

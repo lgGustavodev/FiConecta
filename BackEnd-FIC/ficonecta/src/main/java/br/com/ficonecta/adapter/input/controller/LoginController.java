@@ -1,5 +1,6 @@
 package br.com.ficonecta.adapter.input.controller;
 
+import br.com.ficonecta.adapter.input.controller.swagger.LoginControllerSwagger;
 import br.com.ficonecta.application.dto.request.LoginRequest;
 import br.com.ficonecta.application.dto.response.LoginResponse;
 import br.com.ficonecta.application.service.LoginService;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
-public class LoginController {
+public class LoginController implements LoginControllerSwagger {
 
     private final LoginService loginService;
 
     @PostMapping
+    @Override
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         LoginResponse response = loginService.autenticar(request);
         return ResponseEntity.ok(response);
