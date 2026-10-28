@@ -1,179 +1,47 @@
-<div class="cadastro-container">
-  <h1>Criar conta</h1>
-
-  <div class="toggle-tipo">
-    <button
-      type="button"
-      [class.ativo]="tipoSelecionado() === 'PRESTADOR'"
-      (click)="selecionarTipo('PRESTADOR')">
-      Prestador de Serviço
-    </button>
-
-    <button
-      type="button"
-      [class.ativo]="tipoSelecionado() === 'EMPRESA'"
-      (click)="selecionarTipo('EMPRESA')">
-      Empresa
-    </button>
+<div class="auth-layout">
+  <div class="auth-layout__hero" aria-hidden="true">
+    <img src="assets/images/login-hero.jpg" alt="" class="auth-layout__hero-img" />
+    <div class="auth-layout__hero-content"><h2 class="auth-layout__hero-title">Comece a construir <span>novas oportunidades.</span></h2></div>
   </div>
-
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-    <!-- Nome -->
-    <label for="nome">
-      {{ tipoSelecionado() === 'PRESTADOR' ? 'Nome completo' : 'Nome da empresa' }}
-    </label>
-
-    <input
-      id="nome"
-      type="text"
-      formControlName="nome"
-    />
-
-    @if (form.controls['nome'].touched && form.controls['nome'].hasError('required')) {
-      <span class="erro-campo">
-        {{ tipoSelecionado() === 'PRESTADOR'
-          ? 'Nome completo é obrigatório.'
-          : 'Nome da empresa é obrigatório.' }}
-      </span>
-    }
-
-
-    <!-- Email -->
-    <label for="email">Email</label>
-
-    <input
-      id="email"
-      type="email"
-      formControlName="email"
-    />
-
-    @if (form.controls['email'].touched && form.controls['email'].hasError('required')) {
-      <span class="erro-campo">
-        Email é obrigatório.
-      </span>
-    }
-
-    @if (form.controls['email'].touched && form.controls['email'].hasError('email')) {
-      <span class="erro-campo">
-        Informe um email válido.
-      </span>
-    }
-
-
-    <!-- Senha -->
-    <label for="senha">Senha</label>
-
-    <input
-      id="senha"
-      type="password"
-      formControlName="senha"
-    />
-
-    @if (form.controls['senha'].touched && form.controls['senha'].hasError('required')) {
-      <span class="erro-campo">
-        Senha é obrigatória.
-      </span>
-    }
-
-    @if (form.controls['senha'].touched && form.controls['senha'].hasError('minlength')) {
-      <span class="erro-campo">
-        A senha deve ter pelo menos 6 caracteres.
-      </span>
-    }
-
-
-    <!-- Prestador -->
-    @if (tipoSelecionado() === 'PRESTADOR') {
-
-      <label for="cpf">CPF</label>
-
-      <input
-        id="cpf"
-        type="text"
-        formControlName="cpf"
-      />
-
-      @if (form.controls['cpf'].touched && form.controls['cpf'].hasError('required')) {
-        <span class="erro-campo">
-          CPF é obrigatório.
-        </span>
-      }
-
-    }
-
-
-    <!-- Empresa -->
-    @if (tipoSelecionado() === 'EMPRESA') {
-
-      <label for="tipoDocumento">Tipo de documento</label>
-
-      <select
-        id="tipoDocumento"
-        formControlName="tipoDocumento">
-        <option value="CPF">CPF</option>
-        <option value="CNPJ">CNPJ</option>
-      </select>
-
-      @if (
-        form.controls['tipoDocumento'].touched &&
-        form.controls['tipoDocumento'].hasError('required')
-      ) {
-        <span class="erro-campo">
-          Selecione o tipo de documento.
-        </span>
-      }
-
-
-      <label for="documento">Documento</label>
-
-      <input
-        id="documento"
-        type="text"
-        formControlName="documento"
-      />
-
-      @if (
-        form.controls['documento'].touched &&
-        form.controls['documento'].hasError('required')
-      ) {
-        <span class="erro-campo">
-          Documento é obrigatório.
-        </span>
-      }
-
-    }
-
-
-    <!-- Erro geral -->
-    @if (erro()) {
-      <p class="erro">
-        {{ erro() }}
-      </p>
-    }
-
-
-    <!-- Sucesso -->
-    @if (sucesso()) {
-      <p class="sucesso">
-        Cadastro realizado! Redirecionando para o login...
-      </p>
-    }
-
-
-    <!-- Botão -->
-    <button
-      type="submit"
-      [disabled]="form.invalid || carregando()">
-
-      {{ carregando() ? 'Cadastrando...' : 'Cadastrar' }}
-
-    </button>
-
-  </form>
-
-  <p>
-    Já tem conta?
-    <a routerLink="/login">Entrar</a>
-  </p>
+  <div class="auth-layout__panel">
+    <section class="auth-card cadastro-card" aria-labelledby="titulo-cadastro">
+      <p class="cadastro-card__eyebrow">FI Conecta</p>
+      <h1 id="titulo-cadastro" class="auth-card__title">Crie sua conta</h1>
+      <p class="auth-card__subtitle">Escolha seu perfil e preencha os dados para começar.</p>
+      <div class="cadastro-tipo" role="group" aria-label="Tipo de conta">
+        <button type="button" [class.cadastro-tipo__opcao--ativa]="isPrestador()" (click)="selecionarTipo('PRESTADOR')"><span aria-hidden="true">↗</span> Prestador</button>
+        <button type="button" [class.cadastro-tipo__opcao--ativa]="isEmpresa()" (click)="selecionarTipo('EMPRESA')"><span aria-hidden="true">▣</span> Empresa</button>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="auth-form__field">
+          <label for="nome">{{ isPrestador() ? 'Nome completo' : 'Nome da empresa' }}</label>
+          <input id="nome" type="text" formControlName="nome" autocomplete="name" />
+          @if (form.controls['nome'].touched && form.controls['nome'].invalid) { <span class="auth-form__error">{{ isPrestador() ? 'Informe seu nome completo.' : 'Informe o nome da empresa.' }}</span> }
+        </div>
+        <div class="auth-form__field">
+          <label for="email">E-mail</label><input id="email" type="email" formControlName="email" autocomplete="email" />
+          @if (form.controls['email'].touched && form.controls['email'].hasError('required')) { <span class="auth-form__error">E-mail é obrigatório.</span> }
+          @if (form.controls['email'].touched && form.controls['email'].hasError('email')) { <span class="auth-form__error">Informe um e-mail válido.</span> }
+        </div>
+        <div class="auth-form__field">
+          <label for="senha">Senha</label><input id="senha" type="password" formControlName="senha" autocomplete="new-password" />
+          <span class="auth-form__hint">Use pelo menos 6 caracteres.</span>
+          @if (form.controls['senha'].touched && form.controls['senha'].hasError('required')) { <span class="auth-form__error">Senha é obrigatória.</span> }
+          @if (form.controls['senha'].touched && form.controls['senha'].hasError('minlength')) { <span class="auth-form__error">A senha deve ter pelo menos 6 caracteres.</span> }
+        </div>
+        @if (isPrestador()) {
+          <div class="auth-form__field"><label for="cpf">CPF</label><input id="cpf" type="text" formControlName="cpf" inputmode="numeric" autocomplete="off" />@if (form.controls['cpf'].touched && form.controls['cpf'].invalid) { <span class="auth-form__error">CPF é obrigatório.</span> }</div>
+        } @else {
+          <div class="cadastro-documento">
+            <div class="auth-form__field"><label for="tipoDocumento">Documento</label><select id="tipoDocumento" formControlName="tipoDocumento"><option value="CPF">CPF</option><option value="CNPJ">CNPJ</option></select></div>
+            <div class="auth-form__field"><label for="documento">Número do documento</label><input id="documento" type="text" formControlName="documento" inputmode="numeric" autocomplete="off" />@if (form.controls['documento'].touched && form.controls['documento'].invalid) { <span class="auth-form__error">Documento é obrigatório.</span> }</div>
+          </div>
+        }
+        @if (erro()) { <p class="auth-form__error auth-form__error--general">{{ erro() }}</p> }
+        @if (sucesso()) { <p class="auth-form__success">Cadastro realizado! Redirecionando...</p> }
+        <button type="submit" class="btn-primary" [disabled]="carregando()">{{ carregando() ? 'Criando conta...' : 'Criar conta' }}</button>
+      </form>
+      <p class="auth-card__footer">Já possui uma conta? <a routerLink="/login">Entrar</a></p>
+    </section>
+  </div>
 </div>

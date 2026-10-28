@@ -37,8 +37,12 @@ export class LoginComponent {
 
     this.authService.login(this.form.value).subscribe({
       next: (resposta) => {
-        console.log('Login OK:', resposta);
+        this.authService.salvarSessao(resposta);
         this.carregando.set(false);
+        const destino = resposta.tipo === 'PRESTADOR'
+          ? '/prestador/dashboard'
+          : '/empresa/dashboard';
+        this.router.navigateByUrl(destino);
       },
       error: () => {
         this.erro.set('Email ou senha inválidos.');

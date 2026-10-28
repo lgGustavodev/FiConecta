@@ -1,0 +1,30 @@
+<main class="dashboard">
+  <header class="dashboard__header">
+    <a class="dashboard__brand" routerLink="/empresa/dashboard">FI Conecta</a>
+    <nav class="dashboard__nav" aria-label="Navegação principal">
+      <a routerLink="/empresa/vagas/nova">Cadastrar vaga</a>
+    </nav>
+  </header>
+
+  @if (carregando()) {
+    <p class="dashboard__state">Carregando painel...</p>
+  } @else if (erro()) {
+    <p class="dashboard__state dashboard__state--error">{{ erro() }}</p>
+  } @else if (dashboard(); as dados) {
+    <section class="dashboard__intro dashboard__intro--with-action">
+      <div>
+        <p class="dashboard__eyebrow">Painel da empresa</p>
+        <h1>Olá, {{ dados.perfil.nome }}.</h1>
+        <p>{{ dados.perfil.descricao || 'Acompanhe as oportunidades publicadas pela sua empresa.' }}</p>
+      </div>
+      <a class="dashboard__button" routerLink="/empresa/vagas/nova">Nova vaga</a>
+    </section>
+
+    <section class="dashboard__cards" aria-label="Resumo de vagas">
+      <article class="dashboard-card dashboard-card--primary"><span>Vagas abertas</span><strong>{{ dados.resumoVagas.abertas }}</strong></article>
+      <article class="dashboard-card"><span>Vagas fechadas</span><strong>{{ dados.resumoVagas.fechadas }}</strong></article>
+      <article class="dashboard-card"><span>Vagas canceladas</span><strong>{{ dados.resumoVagas.canceladas }}</strong></article>
+      <article class="dashboard-card"><span>Total de vagas</span><strong>{{ dados.resumoVagas.total }}</strong></article>
+    </section>
+  }
+</main>

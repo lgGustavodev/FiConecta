@@ -62,7 +62,10 @@ export class CadastroComponent {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.erro.set(null);
     this.carregando.set(true);

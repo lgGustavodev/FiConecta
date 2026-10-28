@@ -39,6 +39,16 @@
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+:root[data-tema='escuro'] {
+  --color-bg: #121a24;
+  --color-surface: #1d2936;
+  --color-text: #f4f7fb;
+  --color-text-muted: #c2ccd6;
+  --color-border: #425466;
+  --color-error: #ff8980;
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, .35);
+}
+
 * {
   box-sizing: border-box;
 }

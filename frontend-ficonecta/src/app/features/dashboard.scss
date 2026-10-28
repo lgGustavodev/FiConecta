@@ -1,0 +1,16 @@
+.dashboard { min-height: 100vh; padding: var(--space-6); }
+.dashboard__header { max-width: 1120px; margin: 0 auto var(--space-12); display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+.dashboard__brand { color: var(--color-blue-dark); font-size: 1.3rem; font-weight: 800; text-decoration: none; }
+.dashboard__nav { display: flex; align-items: center; gap: var(--space-4); a { color: var(--color-blue-dark); font-weight: 700; text-decoration: none; } }
+.dashboard__logout { color: var(--color-text-muted) !important; }
+.dashboard__intro, .dashboard__cards, .dashboard__state { max-width: 1120px; margin-left: auto; margin-right: auto; }
+.dashboard__intro { margin-bottom: var(--space-8); h1 { margin: 0 0 var(--space-2); font-size: clamp(1.8rem, 4vw, 2.5rem); } > p { color: var(--color-text-muted); margin: 0; } }
+.dashboard__intro--with-action { display: flex; justify-content: space-between; align-items: end; gap: var(--space-4); }
+.dashboard__eyebrow { color: var(--color-green-dark) !important; font-size: .85rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+.dashboard__button { background: var(--gradient-brand); border-radius: var(--radius-sm); color: #fff; font-weight: 700; padding: var(--space-3) var(--space-4); text-decoration: none; white-space: nowrap; }
+.dashboard__cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: var(--space-4); }
+.dashboard-card { min-height: 150px; padding: var(--space-6); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-card); span { color: var(--color-text-muted); font-weight: 700; } strong { display: block; margin: var(--space-3) 0; font-size: 2.4rem; } p { color: var(--color-text-muted); font-size: .9rem; margin: 0; } }
+.dashboard-card--primary { background: var(--gradient-brand); color: #fff; span, p { color: #fff; } }
+.dashboard-card__email { overflow-wrap: anywhere; font-size: 1.05rem !important; }
+.dashboard__state { padding: var(--space-6); text-align: center; }.dashboard__state--error { color: var(--color-error); }
+@media (max-width: 600px) { .dashboard { padding: var(--space-4); } .dashboard__header { margin-bottom: var(--space-8); } .dashboard__intro--with-action { align-items: start; flex-direction: column; } }
