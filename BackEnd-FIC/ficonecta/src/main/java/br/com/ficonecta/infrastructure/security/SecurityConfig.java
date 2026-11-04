@@ -22,6 +22,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AutenticacaoEntryPoint autenticacaoEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,6 +49,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ).exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(autenticacaoEntryPoint)
                 )
                 .authorizeHttpRequests(auth -> auth
 						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
