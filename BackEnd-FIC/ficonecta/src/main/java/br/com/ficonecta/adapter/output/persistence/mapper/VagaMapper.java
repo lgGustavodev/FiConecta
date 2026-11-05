@@ -4,6 +4,7 @@ package br.com.ficonecta.adapter.output.persistence.mapper;
 import br.com.ficonecta.application.dto.request.CadastroVagaRequest;
 import br.com.ficonecta.application.dto.request.EnderecoRequest;
 import br.com.ficonecta.application.dto.response.EnderecoResponse;
+import br.com.ficonecta.application.dto.response.VagaDisponivelResponse;
 import br.com.ficonecta.application.dto.response.VagaResponse;
 import br.com.ficonecta.domain.model.Vaga;
 import br.com.ficonecta.domain.model.enums.Endereco;
@@ -25,4 +26,7 @@ public interface VagaMapper {
     Endereco toEndereco(EnderecoRequest request);
 
     EnderecoResponse toEnderecoResponse(Endereco endereco);
+
+    @Mapping(target = "empresaNome", source = "empresa.nome")
+    VagaDisponivelResponse toDisponivelResponse(Vaga vaga);
 }
