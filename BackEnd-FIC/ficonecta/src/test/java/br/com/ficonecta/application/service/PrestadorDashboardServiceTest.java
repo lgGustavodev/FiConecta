@@ -1,3 +1,4 @@
+
 package br.com.ficonecta.application.service;
 
 import br.com.ficonecta.application.dto.response.PrestadorDashboardResponse;
@@ -5,20 +6,30 @@ import br.com.ficonecta.application.dto.response.PrestadorResponse;
 import br.com.ficonecta.domain.model.enums.StatusVaga;
 import br.com.ficonecta.domain.port.output.VagaRepository;
 import br.com.ficonecta.infrastructure.exception.PerfilNaoEncontradoException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PrestadorDashboardServiceTest {
+
+    private static final Clock CLOCK = Clock.fixed(
+            Instant.parse("2026-11-05T12:00:00Z"),
+            ZoneId.of("America/Fortaleza")
+    );
+
+    private static final LocalDate HOJE = LocalDate.of(2026, 11, 5);
 
     @Mock
     private PrestadorPerfilService prestadorPerfilService;
@@ -26,8 +37,16 @@ class PrestadorDashboardServiceTest {
     @Mock
     private VagaRepository vagaRepository;
 
-    @InjectMocks
     private PrestadorDashboardService prestadorDashboardService;
+
+    @BeforeEach
+    void setUp() {
+        prestadorDashboardService = new PrestadorDashboardService(
+                prestadorPerfilService,
+                vagaRepository,
+                CLOCK
+        );
+    }
 
     @Test
     void deveRetornarPerfilEQuantidadeDeVagasAbertas() {
@@ -42,8 +61,12 @@ class PrestadorDashboardServiceTest {
                 .disponivel(true)
                 .build();
 
-        when(prestadorPerfilService.buscarMeuPerfil(usuarioId)).thenReturn(perfil);
-        when(vagaRepository.countByStatus(StatusVaga.ABERTA)).thenReturn(5L);
+        when(prestadorPerfilService.buscarMeuPerfil(usuarioId))
+                .thenReturn(perfil);
+
+        when(vagaRepository.countByStatusAndDataVagaGreaterThanEqual(
+                StatusVaga.ABERTA, HOJE
+        )).thenReturn(5L);
 
         // Act
         PrestadorDashboardResponse resultado =
@@ -55,7 +78,11 @@ class PrestadorDashboardServiceTest {
         assertEquals(5L, resultado.getVagasAbertas());
 
         verify(prestadorPerfilService).buscarMeuPerfil(usuarioId);
-        verify(vagaRepository).countByStatus(StatusVaga.ABERTA);
+
+        verify(vagaRepository)
+                .countByStatusAndDataVagaGreaterThanEqual(
+                        StatusVaga.ABERTA, HOJE
+                );
     }
 
     @Test
@@ -73,6 +100,10 @@ class PrestadorDashboardServiceTest {
                 () -> prestadorDashboardService.buscarDashboard(usuarioId)
         );
 
-        verify(vagaRepository, never()).countByStatus(any(StatusVaga.class));
+        verify(vagaRepository, never())
+                .countByStatusAndDataVagaGreaterThanEqual(
+                        any(StatusVaga.class),
+                        any(LocalDate.class)
+                );
     }
 }

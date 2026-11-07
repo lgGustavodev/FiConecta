@@ -9,12 +9,7 @@ import br.com.ficonecta.application.dto.response.EmpresaResponse;
 import br.com.ficonecta.application.dto.response.PrestadorDashboardResponse;
 import br.com.ficonecta.application.dto.response.PrestadorResponse;
 import br.com.ficonecta.application.dto.response.ResumoVagasResponse;
-import br.com.ficonecta.application.service.CadastroEmpresaService;
-import br.com.ficonecta.application.service.CadastroPrestadorService;
-import br.com.ficonecta.application.service.EmpresaDashboardService;
-import br.com.ficonecta.application.service.EmpresaPerfilService;
-import br.com.ficonecta.application.service.PrestadorDashboardService;
-import br.com.ficonecta.application.service.PrestadorPerfilService;
+import br.com.ficonecta.application.service.*;
 import br.com.ficonecta.domain.model.enums.TipoUsuario;
 import br.com.ficonecta.infrastructure.security.AutenticacaoEntryPoint;
 import br.com.ficonecta.infrastructure.security.AutenticacaoUtil;
@@ -66,6 +61,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @MockitoBean private EmpresaPerfilService empresaPerfilService;
     @MockitoBean private PrestadorDashboardService prestadorDashboardService;
     @MockitoBean private EmpresaDashboardService empresaDashboardService;
+    @MockitoBean private PrestadorVagaService prestadorVagaService;
 
     // ---------------------------------------------------------------
     // 1. CAMINHO FELIZ: o tipo certo, com token válido, entra

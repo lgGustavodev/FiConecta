@@ -20,4 +20,6 @@ public interface VagaRepository {
     Page<Vaga> findByEmpresaIdAndStatus(UUID empresaId, StatusVaga status, Pageable pageable);
 
     Page<Vaga> findByStatusAndDataVagaGreaterThanEqual(StatusVaga status, LocalDate data, Pageable pageable);
+
+    long countByStatusAndDataVagaGreaterThanEqual(StatusVaga status, LocalDate data);
 }
