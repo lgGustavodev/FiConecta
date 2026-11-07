@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import br.com.ficonecta.application.dto.response.PaginaResponse;
+import br.com.ficonecta.application.dto.response.VagaDisponivelResponse;
+import br.com.ficonecta.application.service.PrestadorVagaService;
 
 @RestController
 @RequestMapping("/prestadores")
@@ -23,6 +26,8 @@ public class PrestadorController implements PrestadorControllerSwagger {
     private  final PrestadorPerfilService prestadorPerfilService;
     private final AutenticacaoUtil autenticacaoUtil;
     private final PrestadorDashboardService prestadorDashboardService;
+    private final PrestadorVagaService prestadorVagaService;
+
 
 
     @PostMapping("/cadastro")
@@ -47,6 +52,15 @@ public class PrestadorController implements PrestadorControllerSwagger {
         return prestadorDashboardService.buscarDashboard(
                 autenticacaoUtil.getUsuarioIdAutenticado()
         );
+    }
+
+    @GetMapping("/vagas")
+    @Override
+    public PaginaResponse<VagaDisponivelResponse> listarVagasDisponiveis(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        return prestadorVagaService.listarDisponiveis(page, size);
     }
 }
 //http://localhost:8080/api/cadastro-prestadores

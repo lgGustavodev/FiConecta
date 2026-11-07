@@ -9,13 +9,9 @@ import br.com.ficonecta.application.dto.response.EmpresaResponse;
 import br.com.ficonecta.application.dto.response.PrestadorDashboardResponse;
 import br.com.ficonecta.application.dto.response.PrestadorResponse;
 import br.com.ficonecta.application.dto.response.ResumoVagasResponse;
-import br.com.ficonecta.application.service.CadastroEmpresaService;
-import br.com.ficonecta.application.service.CadastroPrestadorService;
-import br.com.ficonecta.application.service.EmpresaDashboardService;
-import br.com.ficonecta.application.service.EmpresaPerfilService;
-import br.com.ficonecta.application.service.PrestadorDashboardService;
-import br.com.ficonecta.application.service.PrestadorPerfilService;
+import br.com.ficonecta.application.service.*;
 import br.com.ficonecta.domain.model.enums.TipoUsuario;
+import br.com.ficonecta.infrastructure.security.AutenticacaoEntryPoint;
 import br.com.ficonecta.infrastructure.security.AutenticacaoUtil;
 import br.com.ficonecta.infrastructure.security.JwtService;
 import br.com.ficonecta.infrastructure.security.SecurityConfig;
@@ -31,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -41,8 +38,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest({PrestadorController.class, EmpresaController.class})
-@Import({SecurityConfig.class, JwtService.class, AutenticacaoUtil.class})
-class SegurancaEndpointsTest {
+@Import({
+        SecurityConfig.class,
+        JwtService.class,
+        AutenticacaoUtil.class,
+        AutenticacaoEntryPoint.class
+})class SegurancaEndpointsTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,6 +61,7 @@ class SegurancaEndpointsTest {
     @MockitoBean private EmpresaPerfilService empresaPerfilService;
     @MockitoBean private PrestadorDashboardService prestadorDashboardService;
     @MockitoBean private EmpresaDashboardService empresaDashboardService;
+    @MockitoBean private PrestadorVagaService prestadorVagaService;
 
     // ---------------------------------------------------------------
     // 1. CAMINHO FELIZ: o tipo certo, com token válido, entra
@@ -149,10 +151,10 @@ class SegurancaEndpointsTest {
             "/prestadores/dashboard",
             "/prestadores/me"
     })
-    void semTokenRecebe403(String rota) throws Exception {
+    void semTokenRecebe401(String rota) throws Exception {
 
         mockMvc.perform(get(rota))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         verifyNoInteractions(empresaDashboardService, prestadorDashboardService,
                 empresaPerfilService, prestadorPerfilService);
@@ -163,49 +165,55 @@ class SegurancaEndpointsTest {
     // ---------------------------------------------------------------
 
     @Test
-    void tokenAdulteradoRecebe403() throws Exception {
+    void tokenAdulteradoRecebe401() throws Exception {
 
-        // Arrange: token válido com o payload alterado (a assinatura não bate mais)
+        // Arrange
         String token = jwtService.gerarToken(UUID.randomUUID(), TipoUsuario.EMPRESA);
         String[] partes = token.split("\\.");
-        String payloadAlterado = (partes[1].charAt(0) == 'A' ? "B" : "A") + partes[1].substring(1);
+
+        String payloadAlterado = (partes[1].charAt(0) == 'A' ? "B" : "A")
+                + partes[1].substring(1);
+
         String adulterado = partes[0] + "." + payloadAlterado + "." + partes[2];
 
         // Act & Assert
         mockMvc.perform(get("/empresas/dashboard")
                         .header("Authorization", "Bearer " + adulterado))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         verifyNoInteractions(empresaDashboardService);
     }
 
     @Test
-    void tokenExpiradoRecebe403() throws Exception {
+    void tokenExpiradoRecebe401() throws Exception {
 
-        // Arrange: serviço com validade negativa gera um token que já nasce expirado
+        // Arrange
         JwtService jwtServiceExpirado = new JwtService(secret, -1000L);
         String token = jwtServiceExpirado.gerarToken(UUID.randomUUID(), TipoUsuario.EMPRESA);
 
         // Act & Assert
         mockMvc.perform(get("/empresas/dashboard")
                         .header("Authorization", "Bearer " + token))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         verifyNoInteractions(empresaDashboardService);
     }
 
     @Test
-    void tokenAssinadoComOutraChaveRecebe403() throws Exception {
+    void tokenAssinadoComOutraChaveRecebe401() throws Exception {
 
-        // Arrange: token perfeito, mas assinado por quem não conhece o segredo da aplicação
+        // Arrange
         JwtService jwtServiceDeOutraChave =
                 new JwtService("uma-outra-chave-secreta-com-mais-de-32-caracteres", 60000L);
-        String token = jwtServiceDeOutraChave.gerarToken(UUID.randomUUID(), TipoUsuario.EMPRESA);
+
+        String token = jwtServiceDeOutraChave.gerarToken(
+                UUID.randomUUID(), TipoUsuario.EMPRESA
+        );
 
         // Act & Assert
         mockMvc.perform(get("/empresas/dashboard")
                         .header("Authorization", "Bearer " + token))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
 
         verifyNoInteractions(empresaDashboardService);
     }
@@ -246,6 +254,8 @@ class SegurancaEndpointsTest {
                         .content(json))
                 .andExpect(status().isCreated());
     }
+
+
 
     // ---------------------------------------------------------------
 
