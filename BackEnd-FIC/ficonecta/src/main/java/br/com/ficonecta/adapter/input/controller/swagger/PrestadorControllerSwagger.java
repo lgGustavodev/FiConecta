@@ -13,8 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import br.com.ficonecta.application.dto.response.PaginaResponse;
+import br.com.ficonecta.application.dto.response.VagaDisponivelResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 
-@Tag(name = "Prestadores", description = "Cadastro, perfil e painel de prestadores de serviço.")
+@Tag(name = "Prestadores", description = "Cadastro, perfil, painel e vagas disponíveis para prestadores de serviço.")
 public interface PrestadorControllerSwagger {
 
     @Operation(summary = "Cadastra um prestador", description = "Cria um prestador e sua conta de acesso. Este endpoint é público.")
@@ -50,5 +53,20 @@ public interface PrestadorControllerSwagger {
             @ApiResponse(responseCode = "401", description = "Token ausente, inválido ou expirado"),
             @ApiResponse(responseCode = "403", description = "Usuário não possui o perfil PRESTADOR")
     })
+
     PrestadorDashboardResponse dashboard();
+
+    @Operation(summary = "Lista as vagas disponíveis para o prestador",
+            description = "Retorna uma página de vagas abertas, de todas as empresas, com data de hoje em diante, "
+                    + "da data mais próxima para a mais distante. O tamanho da página é limitado a 50.")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Página de vagas disponíveis",
+                    content = @Content(schema = @Schema(implementation = PaginaResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Token ausente, inválido ou expirado"),
+            @ApiResponse(responseCode = "403", description = "Usuário não possui o perfil PRESTADOR")
+    })
+    PaginaResponse<VagaDisponivelResponse> listarVagasDisponiveis(
+            @Parameter(description = "Número da página, começando em 0") int page,
+            @Parameter(description = "Itens por página (padrão 20, máximo 50)") int size);
 }
