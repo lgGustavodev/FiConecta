@@ -73,7 +73,7 @@ CREATE TABLE vagas (
                        bairro          VARCHAR(100) NOT NULL,
                        cidade          VARCHAR(100) NOT NULL,
                        uf              CHAR(2)      NOT NULL,
-                       status          VARCHAR(20) NOT NULL DEFAULT 'ABERTA' CHECK (status IN ('ABERTA', 'FECHADA', 'CANCELADA')),
+                       status VARCHAR(20) NOT NULL DEFAULT 'ABERTA' CHECK (status IN ('ABERTA', 'FECHADA', 'CANCELADA', 'EXPIRADA')),
                        created_at      TIMESTAMP NOT NULL DEFAULT NOW(),
                        updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
