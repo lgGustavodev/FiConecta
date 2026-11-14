@@ -7,6 +7,7 @@ import br.com.ficonecta.application.dto.response.PaginaResponse;
 import br.com.ficonecta.application.dto.response.VagaResponse;
 import br.com.ficonecta.application.service.CadastroVagaService;
 import br.com.ficonecta.application.service.CancelamentoVagaService;
+import br.com.ficonecta.application.service.EdicaoVagaService;
 import br.com.ficonecta.application.service.EmpresaVagaService;
 import br.com.ficonecta.domain.model.enums.StatusVaga;
 import br.com.ficonecta.infrastructure.security.AutenticacaoUtil;
@@ -27,7 +28,7 @@ public class VagaController implements VagaControllerSwagger {
     private final AutenticacaoUtil autenticacaoUtil;
     private final EmpresaVagaService empresaVagaService;
     private final CancelamentoVagaService cancelamentoVagaService;
-
+    private final EdicaoVagaService edicaoVagaService;
 
 
     @PostMapping
@@ -54,5 +55,12 @@ public class VagaController implements VagaControllerSwagger {
 
         UUID usuarioId = autenticacaoUtil.getUsuarioIdAutenticado();
         return empresaVagaService.listar(usuarioId, status, page, size);
+    }
+
+    @PutMapping("/{id}/editar")
+    @Override
+    public VagaResponse editarVaga(@PathVariable UUID id, @Valid @RequestBody CadastroVagaRequest request) {
+        UUID usuarioId = autenticacaoUtil.getUsuarioIdAutenticado();
+        return edicaoVagaService.editarVaga(usuarioId, id, request);
     }
 }

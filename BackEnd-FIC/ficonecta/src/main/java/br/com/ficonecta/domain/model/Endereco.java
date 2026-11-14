@@ -1,4 +1,4 @@
-package br.com.ficonecta.domain.model.enums;
+package br.com.ficonecta.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

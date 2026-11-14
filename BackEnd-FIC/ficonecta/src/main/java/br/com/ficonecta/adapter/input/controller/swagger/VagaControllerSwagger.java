@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 import java.util.UUID;
 
-@Tag(name = "Vagas", description = "Cadastro, listagem e cancelamento de vagas pelas empresas.")
+@Tag(name = "Vagas", description = "Cadastro, listagem, edição e cancelamento de vagas pelas empresas.")
 public interface VagaControllerSwagger {
 
     @Operation(summary = "Cadastra uma vaga", description = "Cria uma vaga associada à empresa autenticada.")
@@ -69,4 +69,25 @@ public interface VagaControllerSwagger {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     VagaResponse cancelar(@Parameter(description = "Id da vaga") UUID id);
+
+
+    @Operation(summary = "Edita uma vaga",
+            description = "Substitui os dados de uma vaga ABERTA da empresa autenticada. "
+                    + "Aplica as mesmas validações do cadastro. O status não é alterado.")
+    @SecurityRequirement(name = "bearerAuth")
+    @RequestBody(required = true, description = "Novos dados da vaga",
+            content = @Content(schema = @Schema(implementation = CadastroVagaRequest.class)))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Vaga editada",
+                    content = @Content(schema = @Schema(implementation = VagaResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Token ausente, inválido ou expirado"),
+            @ApiResponse(responseCode = "403", description = "Usuário não possui o perfil EMPRESA"),
+            @ApiResponse(responseCode = "404", description = "Vaga não encontrada para esta empresa",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "409", description = "A vaga não está ABERTA",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    VagaResponse editarVaga(@Parameter(description = "Id da vaga") UUID id, CadastroVagaRequest request);
 }

@@ -1,7 +1,6 @@
 package br.com.ficonecta.domain.model;
 
 
-import br.com.ficonecta.domain.model.enums.Endereco;
 import br.com.ficonecta.domain.model.enums.StatusVaga;
 import jakarta.persistence.*;
 import lombok.*;
