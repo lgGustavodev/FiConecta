@@ -4,5 +4,5 @@ public enum StatusVaga {
     ABERTA,
     FECHADA,
     CANCELADA,
-    EXPIRANDA
+    EXPIRADA
 }

@@ -46,7 +46,7 @@ public class EmpresaVagaService {
         );
 
         log.debug("Listando vagas da empresa {} status={} page={} size={}",
-                empresa.getId(), status, pageable.getPageNumber(), pageable.getPageSize());
+                empresa.getNome(), status, pageable.getPageNumber(), pageable.getPageSize());
 
         Page<Vaga> vagas = (status == null)
                 ? vagaRepository.findByEmpresaId(empresa.getId(), pageable)
