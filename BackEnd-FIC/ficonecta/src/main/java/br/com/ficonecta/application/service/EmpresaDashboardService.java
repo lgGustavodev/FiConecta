@@ -26,7 +26,7 @@ public class EmpresaDashboardService {
 
         EmpresaResponse perfil = empresaPerfilService.buscarMeuPerfil(usuarioId);
 
-        ResumoVagasResponse resumoVagas = montarResumoVagas(perfil.getId());
+        ResumoVagasResponse resumoVagas = montarResumoVagas(perfil.getId(), perfil.getNome());
 
         return EmpresaDashboardResponse.builder()
                 .perfil(perfil)
@@ -34,20 +34,25 @@ public class EmpresaDashboardService {
                 .build();
     }
 
-    private ResumoVagasResponse montarResumoVagas(UUID empresaId) {
+    private ResumoVagasResponse montarResumoVagas(UUID empresaId, String nomeEmpresa) {
 
         long abertas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.ABERTA);
         long fechadas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.FECHADA);
         long canceladas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.CANCELADA);
+        long expiradas = vagaRepository.countByEmpresaIdAndStatus(empresaId, StatusVaga.EXPIRADA);
 
-        log.debug("Resumo de vagas (empresaId={}): abertas={}, fechadas={}, canceladas={}",
-                empresaId, abertas, fechadas, canceladas);
+
+        log.debug(
+                "Resumo de vagas da empresa '{}': abertas={}, fechadas={}, canceladas={}, expiradas={}",
+                nomeEmpresa, abertas, fechadas, canceladas, expiradas
+        );
 
         return ResumoVagasResponse.builder()
                 .abertas(abertas)
                 .fechadas(fechadas)
                 .canceladas(canceladas)
-                .total(abertas + fechadas + canceladas)
+                .expiradas(expiradas)
+                .total(abertas + fechadas + canceladas + expiradas)
                 .build();
     }
 }

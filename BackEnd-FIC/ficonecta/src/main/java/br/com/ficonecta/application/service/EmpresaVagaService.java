@@ -45,7 +45,7 @@ public class EmpresaVagaService {
                 Sort.by(Sort.Order.desc("createdAt"), Sort.Order.asc("id"))
         );
 
-        log.debug("Listando vagas da empresa {} status={} page={} size={}",
+        log.debug("Listando vagas da empresa {}, status={}, page={}, size={}",
                 empresa.getNome(), status, pageable.getPageNumber(), pageable.getPageSize());
 
         Page<Vaga> vagas = (status == null)
