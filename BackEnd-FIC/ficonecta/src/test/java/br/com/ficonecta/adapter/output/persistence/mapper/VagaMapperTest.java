@@ -6,7 +6,7 @@ import br.com.ficonecta.application.dto.request.CadastroVagaRequest;
 import br.com.ficonecta.application.dto.request.EnderecoRequest;
 import br.com.ficonecta.application.dto.response.VagaResponse;
 import br.com.ficonecta.domain.model.Vaga;
-import br.com.ficonecta.domain.model.enums.Endereco;
+import br.com.ficonecta.domain.model.Endereco;
 import br.com.ficonecta.domain.model.enums.StatusVaga;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

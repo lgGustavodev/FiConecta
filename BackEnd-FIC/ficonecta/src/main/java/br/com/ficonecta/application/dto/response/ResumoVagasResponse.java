@@ -13,5 +13,6 @@ public class ResumoVagasResponse {
     private long abertas;
     private long fechadas;
     private long canceladas;
+    private long expiradas;
     private long total;
 }

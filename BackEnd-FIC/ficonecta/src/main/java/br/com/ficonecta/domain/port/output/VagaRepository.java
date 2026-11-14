@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface VagaRepository {
@@ -22,4 +24,9 @@ public interface VagaRepository {
     Page<Vaga> findByStatusAndDataVagaGreaterThanEqual(StatusVaga status, LocalDate data, Pageable pageable);
 
     long countByStatusAndDataVagaGreaterThanEqual(StatusVaga status, LocalDate data);
+
+    Optional<Vaga> findByIdAndEmpresaId(UUID id, UUID empresaId);
+
+    int alterarStatusDeVagasAnterioresA(StatusVaga statusAtual, StatusVaga novoStatus,
+                                        LocalDate data, LocalDateTime agora);
 }

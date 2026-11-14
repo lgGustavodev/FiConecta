@@ -53,7 +53,8 @@ public class SecurityConfig {
                         .authenticationEntryPoint(autenticacaoEntryPoint)
                 )
                 .authorizeHttpRequests(auth -> auth
-						.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/prestadores/cadastro").permitAll()
                         .requestMatchers("/empresas/cadastro").permitAll()

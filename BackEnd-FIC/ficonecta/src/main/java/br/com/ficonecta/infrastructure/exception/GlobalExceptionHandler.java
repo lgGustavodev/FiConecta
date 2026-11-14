@@ -61,5 +61,14 @@ public class GlobalExceptionHandler {
         return montarResposta(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
+    @ExceptionHandler(VagaNaoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> handleVagaNaoEncontrada(VagaNaoEncontradaException ex) {
+        return montarResposta(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(VagaStatusInvalidoException.class)
+    public ResponseEntity<ErrorResponse> handleVagaStatusInvalido(VagaStatusInvalidoException ex) {
+        return montarResposta(HttpStatus.CONFLICT, ex.getMessage());
+    }
 
 }

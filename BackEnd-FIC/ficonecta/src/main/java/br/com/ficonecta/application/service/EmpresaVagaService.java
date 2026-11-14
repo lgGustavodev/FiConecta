@@ -45,8 +45,8 @@ public class EmpresaVagaService {
                 Sort.by(Sort.Order.desc("createdAt"), Sort.Order.asc("id"))
         );
 
-        log.debug("Listando vagas da empresa {} status={} page={} size={}",
-                empresa.getId(), status, pageable.getPageNumber(), pageable.getPageSize());
+        log.debug("Listando vagas da empresa {}, status={}, page={}, size={}",
+                empresa.getNome(), status, pageable.getPageNumber(), pageable.getPageSize());
 
         Page<Vaga> vagas = (status == null)
                 ? vagaRepository.findByEmpresaId(empresa.getId(), pageable)
